@@ -7,4 +7,9 @@ const create= async (req:Request, res:Response):Promise<Response>=>{
     return res.status(201).json(company)
 }
 
-export default{create}
+const update= async (req:Request, res:Response):Promise<Response>=>{
+    const company:readCompany= await companyServices.update(req.body,res.locals.company)
+    return res.status(200).json(company)
+}
+
+export default{create,update}
