@@ -11,8 +11,9 @@ type createCompany = z.infer<typeof companyCreateSchema>;
 type readCompany = z.infer<typeof companyReadSchema>;
 type updateCompany = DeepPartial<Company>;
 type allCompany = z.infer<typeof allcompanyReadSchema>;
-
 type repositoryCompany = Repository<Company>;
+
+
 
 export {
   allCompany,
@@ -20,4 +21,5 @@ export {
   updateCompany,
   readCompany,
   repositoryCompany,
+
 };

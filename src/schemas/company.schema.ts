@@ -7,7 +7,7 @@ const companySchema = z.object({
   cnpj: z.string().max(15),
   phoneNumber: z.string().max(100),
   email: z.string().max(50).email(),
-  password: z.string().max(20),
+  password: z.string().max(200),
 });
 
 const companyCreateSchema = companySchema.omit({ id: true });
@@ -17,6 +17,8 @@ const companyReadSchema = companySchema.omit({ password: true });
 const allcompanyReadSchema = companyReadSchema.array();
 
 const companyUpdateSchema = companyCreateSchema.partial();
+
+
 
 export {
   allcompanyReadSchema,
