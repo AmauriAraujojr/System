@@ -1,12 +1,16 @@
 import { AppDataSource } from "../data-source";
 import Company from "../entities/company.entity";
 import {
+  allCompany,
   createCompany,
   readCompany,
   repositoryCompany,
   updateCompany,
 } from "../interfaces/company.interface";
-import { companyReadSchema } from "../schemas/company.schema";
+import {
+  allcompanyReadSchema,
+  companyReadSchema,
+} from "../schemas/company.schema";
 
 const create = async (payload: createCompany): Promise<readCompany> => {
   const companyRepository: repositoryCompany =
@@ -19,6 +23,14 @@ const create = async (payload: createCompany): Promise<readCompany> => {
   await companyRepository.save(company);
 
   return companyReadSchema.parse(company);
+};
+
+const read = async (): Promise<allCompany> => {
+  const repository: repositoryCompany = AppDataSource.getRepository(Company);
+
+  const companies = await repository.find();
+
+  return allcompanyReadSchema.parse(companies);
 };
 
 const update = async (
@@ -37,7 +49,15 @@ const update = async (
   return companyReadSchema.parse(companyUp);
 };
 
+const destroy = async (company: Company): Promise<void> => {
+  const repository: repositoryCompany = AppDataSource.getRepository(Company);
+
+  await repository.remove(company);
+};
+
 export default {
   create,
+  read,
   update,
+  destroy,
 };

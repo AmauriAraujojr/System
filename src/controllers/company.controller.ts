@@ -1,15 +1,33 @@
 import { Request, Response } from "express";
-import { readCompany } from "../interfaces/company.interface";
+import { allCompany, readCompany } from "../interfaces/company.interface";
 import { companyServices } from "../services";
 
-const create= async (req:Request, res:Response):Promise<Response>=>{
-    const company:readCompany= await companyServices.create(req.body)
-    return res.status(201).json(company)
-}
+const create = async (req: Request, res: Response): Promise<Response> => {
+  const company: readCompany = await companyServices.create(req.body);
+  return res.status(201).json(company);
+};
 
-const update= async (req:Request, res:Response):Promise<Response>=>{
-    const company:readCompany= await companyServices.update(req.body,res.locals.company)
-    return res.status(200).json(company)
-}
+const read = async (req: Request, res: Response): Promise<Response> => {
+  const companies: allCompany = await companyServices.read();
+  return res.status(200).json(companies);
+};
 
-export default{create,update}
+const retrieve = async (req: Request, res: Response): Promise<Response> => {
+  const company: readCompany = await res.locals.company;
+  return res.status(200).json(company);
+};
+
+const update = async (req: Request, res: Response): Promise<Response> => {
+  const company: readCompany = await companyServices.update(
+    req.body,
+    res.locals.company
+  );
+  return res.status(200).json(company);
+};
+
+const destroy = async (req: Request, res: Response): Promise<Response> => {
+  await companyServices.destroy(res.locals.company);
+  return res.status(204).json();
+};
+
+export default { create, read, retrieve, update, destroy };
