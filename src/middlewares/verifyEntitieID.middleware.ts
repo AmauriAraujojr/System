@@ -3,6 +3,7 @@ import { repositoryCompany } from "../interfaces/company.interface";
 import { AppDataSource } from "../data-source";
 import Company from "../entities/company.entity";
 import { AppError } from "../errors/app.error";
+import { companyReadSchema } from "../schemas/company.schema";
 
 export const VerifyEntitieExists= async (req:Request, res:Response, next:NextFunction):Promise<void>=>{
  
@@ -11,12 +12,13 @@ export const VerifyEntitieExists= async (req:Request, res:Response, next:NextFun
     const repositoryCompany:repositoryCompany=AppDataSource.getRepository(Company)
 
     const company:Company | null = await repositoryCompany.findOne({
-        where:{id}
+        where:{id},relations:{employees:true}
     })
 
     if(!company)throw new AppError("Company not found", 404)
 
-    res.locals={...res.locals,company}
+
+    res.locals={...res.locals, company}
 
     return next()
 }

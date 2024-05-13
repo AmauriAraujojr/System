@@ -4,6 +4,7 @@ import cors from "cors"
 import { companyRouter } from "./routes/company.route";
 import { handleError } from "./middlewares/handleError.middleware";
 import { sessionRouter } from "./routes/session.router";
+import { employeesRouter } from "./routes/employees.route";
 
 const app:Application = express();
 app.use(cors())
@@ -12,6 +13,8 @@ app.use(express.json())
 app.use("/company", companyRouter)
 
 app.use("/login", sessionRouter)
+
+app.use("/employees",employeesRouter)
 
 
 
