@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { EmployeeType } from "../entities/employees.entity";
+import { companyReadSchema } from "./company.schema";
 
 const employeeSchema = z.object({
   id: z.number().positive(),
@@ -7,7 +8,7 @@ const employeeSchema = z.object({
   phoneNumber: z.string().max(100),
   email: z.string().max(50).email(),
   password: z.string().max(200),
-  job: z.nativeEnum(EmployeeType),
+  job: z.nativeEnum(EmployeeType).default(EmployeeType.CLIENTE),
 });
 
 const employeeCreateSchema = employeeSchema.omit({ id: true });

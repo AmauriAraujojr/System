@@ -27,7 +27,7 @@ const create = async (payload: login): Promise<sessionReturn> => {
   if (!samePassword) throw new AppError("Invalid Credentials", 401);
 
   const token: string = sign({ company: company }, process.env.SECRET_KEY!, {
-    subject: company.id.toString(),
+    subject: company.id.toString() ,
     expiresIn: process.env.EXPIRES_IN!,
   });
 

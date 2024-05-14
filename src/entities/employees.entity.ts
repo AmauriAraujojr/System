@@ -7,6 +7,7 @@ export enum EmployeeType {
     MOTOBOY = "Motoboy",
     GARÇON= "Garçon",
     PIZZAIOLO="Pizzaiolo",
+    CLIENTE="Cliente"
   }
 @Entity("employees")
 class Employees{
@@ -26,7 +27,7 @@ class Employees{
     @Column({length:200})
     password: string
 
-    @Column({ type: "enum", enum: EmployeeType, default: EmployeeType.MOTOBOY })
+    @Column({ type: "enum", enum: EmployeeType, default: EmployeeType.CLIENTE })
     job: EmployeeType
 
 

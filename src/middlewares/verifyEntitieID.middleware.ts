@@ -17,8 +17,9 @@ export const VerifyEntitieExists= async (req:Request, res:Response, next:NextFun
 
     if(!company)throw new AppError("Company not found", 404)
 
+    const returnCompany=companyReadSchema.parse(company)
 
-    res.locals={...res.locals, company}
+    res.locals={...res.locals, returnCompany,company}
 
     return next()
 }

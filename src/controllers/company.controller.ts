@@ -13,7 +13,7 @@ const read = async (req: Request, res: Response): Promise<Response> => {
 };
 
 const retrieve = async (req: Request, res: Response): Promise<Response> => {
-  const company: readCompany = await res.locals.company;
+  const company: readCompany = await res.locals.returnCompany;
   return res.status(200).json(company);
 };
 

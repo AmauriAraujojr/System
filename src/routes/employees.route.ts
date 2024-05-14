@@ -3,8 +3,20 @@ import { employeeController } from "../controllers";
 import { VerifyEntitieExists } from "../middlewares/verifyEntitieID.middleware";
 import { VerifyEmailExists } from "../middlewares/verifyEmailExists.middlewere";
 import { validateBody } from "../middlewares/validadeBody.middleware";
-import { employeeCreateSchema } from "../schemas/employees.schema";
+import { employeeCreateSchema, employeeUpdateSchema } from "../schemas/employees.schema";
+import { VerifyEmployeeExists } from "../middlewares/verifyEmployee.middleware";
+import { verifyToken } from "../middlewares/verifyToken.middleware";
 
 export const employeesRouter:Router=Router();
 
 employeesRouter.post("/:id", VerifyEntitieExists,VerifyEmailExists,validateBody(employeeCreateSchema), employeeController.create)
+
+employeesRouter.get("",verifyToken,employeeController.read)
+
+employeesRouter.use("/:id",VerifyEmployeeExists)
+
+employeesRouter.patch("/:id",validateBody(employeeUpdateSchema),employeeController.update)
+
+employeesRouter.get("/:id",employeeController.retrieve)
+
+employeesRouter.delete("/:id",employeeController.destroy)
