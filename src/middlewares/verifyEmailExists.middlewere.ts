@@ -5,6 +5,8 @@ import Company from "../entities/company.entity";
 import { AppError } from "../errors/app.error";
 import { repositoryEmployees } from "../interfaces/employees.interface";
 import Employees from "../entities/employees.entity";
+import { repositoryClient } from "../interfaces/client.interface";
+import Client from "../entities/client.entity";
 
 export const VerifyEmailExists = async (
   req: Request,
@@ -23,8 +25,14 @@ export const VerifyEmailExists = async (
 
   const employee:Employees| null = await repositoryEmployee.findOneBy({ email: email });
 
+  const repositoryClient: repositoryClient = AppDataSource.getRepository(Client);
+
+  const client:Client| null = await repositoryClient.findOneBy({ email: email });
+
   if (company) throw new AppError("Email already exists", 409);
   if (employee) throw new AppError("Email already exists", 409);
+  if (client) throw new AppError("Email already exists", 409);
+
 
 
   return next();

@@ -16,7 +16,7 @@ const companyCreateSchema = companySchema.omit({ id: true });
 
 const companyReadSchema = companySchema
   .omit({ password: true })
-  .extend({ employees: z.array(employeeReadSchema) });
+  .extend({ employees: z.array(employeeReadSchema)});
 
 const allcompanyReadSchema = companyReadSchema.array();
 

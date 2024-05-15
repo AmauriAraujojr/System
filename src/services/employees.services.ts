@@ -31,7 +31,6 @@ const create = async (
 };
 
 const read = async (): Promise<allEmployees> => {
-
   const repository: repositoryEmployees =
     AppDataSource.getRepository(Employees);
 

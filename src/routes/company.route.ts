@@ -7,6 +7,7 @@ import {
 } from "../schemas/company.schema";
 import { VerifyEmailExists } from "../middlewares/verifyEmailExists.middlewere";
 import { VerifyEntitieExists } from "../middlewares/verifyEntitieID.middleware";
+import { verifyToken } from "../middlewares/verifyToken.middleware";
 
 const companyRouter: Router = Router();
 
@@ -17,7 +18,7 @@ companyRouter.post(
   companyController.create
 );
 
-companyRouter.use("/:id", VerifyEntitieExists);
+companyRouter.use("/:id", VerifyEntitieExists,verifyToken);
 
 companyRouter.get("", companyController.read);
 

@@ -1,15 +1,11 @@
 import { getRounds, hashSync } from "bcryptjs";
-import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import Company from "./company.entity";
+import Address from "./address.entity";
 
 
-export enum EmployeeType {
-    MOTOBOY = "Motoboy",
-    GARÇON= "Garçon",
-    PIZZAIOLO="Pizzaiolo",
-  }
-@Entity("employees")
-class Employees{
+@Entity("clients")
+class Client{
 
     @PrimaryGeneratedColumn("increment")
     id:number;
@@ -26,10 +22,6 @@ class Employees{
     @Column({length:200})
     password: string
 
-    @Column({ type: "enum", enum: EmployeeType, default: EmployeeType.GARÇON})
-    job: EmployeeType
-
-
 
     @BeforeInsert()
     @BeforeUpdate()
@@ -39,8 +31,12 @@ class Employees{
             this.password = hashSync(this.password, 10)
         }
     }
-    @ManyToOne(()=> Company,(c)=>c.employees, { onDelete: "CASCADE" })
-   company:Company;
+    @OneToOne(() => Address, { onDelete: "CASCADE" })
+    @JoinColumn()
+    address:Address ;
+
+    // @ManyToOne(()=> Company,(c)=>c.clients, { onDelete: "CASCADE" })
+    // company:Company;
 
 }
-export default Employees
+export default Client

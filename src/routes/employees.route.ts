@@ -6,14 +6,15 @@ import { validateBody } from "../middlewares/validadeBody.middleware";
 import { employeeCreateSchema, employeeUpdateSchema } from "../schemas/employees.schema";
 import { VerifyEmployeeExists } from "../middlewares/verifyEmployee.middleware";
 import { verifyToken } from "../middlewares/verifyToken.middleware";
+import { verifyOwner } from "../middlewares/verifyOwner.middleware";
 
 export const employeesRouter:Router=Router();
 
-employeesRouter.post("/:id", VerifyEntitieExists,VerifyEmailExists,validateBody(employeeCreateSchema), employeeController.create)
+employeesRouter.post("", verifyToken,VerifyEntitieExists,VerifyEmailExists,validateBody(employeeCreateSchema), employeeController.create)
 
-employeesRouter.get("",verifyToken,employeeController.read)
+employeesRouter.get("",employeeController.read)
 
-employeesRouter.use("/:id",VerifyEmployeeExists)
+employeesRouter.use("/:id", verifyToken,verifyOwner,VerifyEmployeeExists)
 
 employeesRouter.patch("/:id",validateBody(employeeUpdateSchema),employeeController.update)
 

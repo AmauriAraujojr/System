@@ -7,7 +7,12 @@ import { companyReadSchema } from "../schemas/company.schema";
 
 export const VerifyEntitieExists= async (req:Request, res:Response, next:NextFunction):Promise<void>=>{
  
-    const id:number= Number(req.params.id)
+  let id:number= Number(req.params.id)
+
+    const companys=res.locals.decoded
+
+    if(!req.params.id) id=Number(companys.company.id)
+
 
     const repositoryCompany:repositoryCompany=AppDataSource.getRepository(Company)
 

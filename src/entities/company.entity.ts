@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import Employees from "./employees.entity";
+import Client from "./client.entity";
 
 @Entity("companies")
 class Company {
@@ -43,6 +44,13 @@ class Company {
 
   @OneToMany(() => Employees, (e) => e.company)
   employees: Array<Employees>;
+
+  // @OneToMany(() => Employees, (e) => e.company)
+  // clients: Array<Client>;
+
+
 }
+
+
 
 export default Company;
