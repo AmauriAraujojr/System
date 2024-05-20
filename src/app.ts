@@ -6,6 +6,7 @@ import { handleError } from "./middlewares/handleError.middleware";
 import { sessionRouter } from "./routes/session.router";
 import { employeesRouter } from "./routes/employees.route";
 import { clientRouter } from "./routes/client.route";
+import { productRouter } from "./routes/product.route";
 
 const app:Application = express();
 app.use(cors())
@@ -18,6 +19,9 @@ app.use("/login",sessionRouter)
 app.use("/employees",employeesRouter)
 
 app.use("/client",clientRouter)
+
+app.use("/product",productRouter)
+
 
 
 app.use(handleError)

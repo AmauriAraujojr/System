@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { clientServices } from "../services";
 import { allClient, readClient } from "../interfaces/client.interface";
+import { sessionReturn } from "../interfaces/session.interface";
 
 const create = async (req: Request, res: Response): Promise<Response> => {
   const client = await clientServices.create(
@@ -32,6 +33,8 @@ const destroy = async (req: Request, res: Response): Promise<Response> => {
   await clientServices.destroy(res.locals.client);
   return res.status(204).json();
 };
+
+
 
 export default {
   create,

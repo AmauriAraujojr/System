@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import Employees from "./employees.entity";
-import Client from "./client.entity";
+import Product from "./products.entity";
 
 @Entity("companies")
 class Company {
@@ -45,8 +45,8 @@ class Company {
   @OneToMany(() => Employees, (e) => e.company)
   employees: Array<Employees>;
 
-  // @OneToMany(() => Employees, (e) => e.company)
-  // clients: Array<Client>;
+  @OneToMany(() => Product, (p) => p.company)
+  products: Array<Product>;
 
 
 }

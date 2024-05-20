@@ -11,7 +11,8 @@ export const VerifyEntitieExists= async (req:Request, res:Response, next:NextFun
 
     const companys=res.locals.decoded
 
-    if(!req.params.id) id=Number(companys.company.id)
+
+    if(!req.params.id) id=Number(companys.userType.id)
 
 
     const repositoryCompany:repositoryCompany=AppDataSource.getRepository(Company)

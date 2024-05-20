@@ -8,18 +8,23 @@ import { sessionSchema } from "../schemas/session.schema";
 import { sign } from "jsonwebtoken";
 import Employees from "../entities/employees.entity";
 import { repositoryEmployees } from "../interfaces/employees.interface";
+import { repositoryClient } from "../interfaces/client.interface";
+import Client from "../entities/client.entity";
 
 const create = async (payload: login): Promise<sessionReturn> => {
   const validate = sessionSchema.parse(payload);
   const { email } = validate;
 
-  let token: string = "";
+  let token: string = "3";
 
   const companyRepository: repositoryCompany =
     AppDataSource.getRepository(Company);
 
   const employeeRepository: repositoryEmployees =
     AppDataSource.getRepository(Employees);
+
+  const clientRepository: repositoryClient =
+    AppDataSource.getRepository(Client);
 
   const company: Company | null = await companyRepository.findOne({
     where: { email: email },
@@ -29,35 +34,36 @@ const create = async (payload: login): Promise<sessionReturn> => {
     where: { email: email },
   });
 
-  if (!company && !employee) throw new AppError("Invalid Credentials", 401);
+  const client: Client | null = await clientRepository.findOne({
+    where: { email: email },
+  });
 
-  if (company && !employee) {
-    const samePassword: boolean = await compare(
-      payload.password,
-      company.password
-    );
+  let user = null;
+  let userType = null;
 
-    if (!samePassword) throw new AppError("Invalid Credentials", 401);
-
-    token = sign({ company: company }, process.env.SECRET_KEY!, {
-      subject: "admin",
-      expiresIn: process.env.EXPIRES_IN!,
-    });
+  if (company && !employee && !client) {
+    user = company;
+    userType = "admin";
+  } else if (employee && !company && !client) {
+    user = employee;
+    userType = employee.id.toString();
+  } else if (client && !company && !employee) {
+    user = client;
+    userType = client.id.toString();
   }
 
-  if (employee && !company) {
-    const otherPassword: boolean = await compare(
-      payload.password,
-      employee.password
-    );
+  if (user) {
+    const isValidPassword = await compare(payload.password, user.password);
+    if (!isValidPassword) throw new AppError("Invalid Credentials", 401);
 
-    if (!otherPassword) throw new AppError("Invalid Credentials", 401);
-
-    token = sign({ employee: employee }, process.env.SECRET_KEY!, {
-      subject: employee.id.toString(),
+    token = sign({ userType: user }, process.env.SECRET_KEY!, {
+      subject: userType!,
       expiresIn: process.env.EXPIRES_IN!,
     });
+  } else {
+    throw new AppError("Invalid Credentials", 401);
   }
+
   return { token };
 };
 

@@ -1,6 +1,8 @@
+import { compare } from "bcryptjs";
 import { AppDataSource } from "../data-source";
 import Address from "../entities/address.entity";
 import Client from "../entities/client.entity";
+import { AppError } from "../errors/app.error";
 import { addressRepo } from "../interfaces/address.interface";
 import {
   allClient,
@@ -75,4 +77,5 @@ const destroy = async (client: Client): Promise<void> => {
   await repository.remove(client);
 };
 
-export default { create, read, update, destroy };
+
+export default { create, read, update, destroy};
