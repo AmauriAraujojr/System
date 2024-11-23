@@ -28,29 +28,27 @@ const create = async (payload: login): Promise<sessionReturn> => {
 
   const company: Company | null = await companyRepository.findOne({
     where: { email: email },
-  });
+    relations:{
+      employees:true,
+      products:true,
+      pedidos:{client:{address:true},products:true,pizzaOption:{pizza:true}}
+    }  });
 
   const employee: Employees | null = await employeeRepository.findOne({
     where: { email: email },
   });
 
-  const client: Client | null = await clientRepository.findOne({
-    where: { email: email },
-  });
 
   let user = null;
   let userType = null;
 
-  if (company && !employee && !client) {
+  if (company && !employee ) {
     user = company;
     userType = "admin";
-  } else if (employee && !company && !client) {
+  } else if (employee && !company ) {
     user = employee;
     userType = employee.id.toString();
-  } else if (client && !company && !employee) {
-    user = client;
-    userType = client.id.toString();
-  }
+  } 
 
   if (user) {
     const isValidPassword = await compare(payload.password, user.password);

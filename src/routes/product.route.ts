@@ -10,9 +10,9 @@ export const productRouter:Router=Router();
 
 productRouter.post("", verifyToken,VerifyEntitieExists, validateBody(productCreateSchema), productController.create)
 
-productRouter.get("",verifyToken,productController.read)
+productRouter.get("",productController.read)
 
-productRouter.use("/:id",VerifyProductExists,verifyToken)
+productRouter.use("/:id",VerifyProductExists,verifyToken,)
 
 productRouter.patch("/:id",validateBody(productUpdateSchema), productController.update)
 

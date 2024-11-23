@@ -18,7 +18,8 @@ const create = async (req: Request, res: Response): Promise<Response> => {
   const update = async (req: Request, res: Response): Promise<Response> => {
     const product: readProduct = await productServices.update(
       req.body,
-      res.locals.product
+      res.locals.returnProduct,
+
     );
     return res.status(200).json(product);
   };
@@ -29,7 +30,8 @@ const create = async (req: Request, res: Response): Promise<Response> => {
   };
 
   const destroy = async (req: Request, res: Response): Promise<Response> => {
-    await productServices.destroy(res.locals.product);
+    await productServices.destroy(res.locals.product,
+    );
     return res.status(204).json();
   };
 

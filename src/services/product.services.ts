@@ -1,7 +1,6 @@
 import { AppDataSource } from "../data-source";
 import Company from "../entities/company.entity";
 import Product from "../entities/products.entity";
-import { AppError } from "../errors/app.error";
 import {
   allProduct,
   createProduct,
@@ -21,8 +20,14 @@ const create = async (
   const productRepository: repositoryProduct =
     AppDataSource.getRepository(Product);
 
-  payload.price = payload.price / payload.quantity;
-  payload.price = Math.round(payload.price * 100) / 100;
+
+   let initPrice = Number(payload.initialPrice) / Number(payload.quantity)
+  
+    let initPrice2 = Math.round(initPrice * 100) / 100;
+
+    payload.initialPrice= String(initPrice2)
+
+  
 
   const product: Product = productRepository.create({
     ...payload,
@@ -38,9 +43,7 @@ const read = async (): Promise<allProduct> => {
   const repository: repositoryProduct = AppDataSource.getRepository(Product);
 
   const products = await repository.find({
-    relations: {
-      company: true,
-    },
+  
     order: { id: 1 },
   });
   return allProductReadSchema.parse(products);
@@ -48,13 +51,14 @@ const read = async (): Promise<allProduct> => {
 
 const update = async (
   payload: updateProduct,
-  product: Product
+  product: Product,
+
 ): Promise<readProduct> => {
   const repository: repositoryProduct = AppDataSource.getRepository(Product);
 
-  if (payload.quantity) {
-    payload.quantity = payload.quantity + product.quantity;
-  }
+  // if (payload.quantity) {
+  //   payload.quantity = payload.quantity + product.quantity;
+  // }
 
   const updProduct: Product = repository.create({
     ...product,
@@ -65,7 +69,9 @@ const update = async (
 
   return productReadSchema.parse(productUp);
 };
-const destroy = async (product: Product): Promise<void> => {
+
+const destroy = async (product: Product,  
+): Promise<void> => {
   const repository: repositoryProduct = AppDataSource.getRepository(Product);
 
   await repository.remove(product);

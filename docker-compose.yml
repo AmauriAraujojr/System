@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # Serviço do PostgreSQL
+  db:
+    image: postgres:12-alpine  # Usando uma imagem oficial do PostgreSQL
+    environment:
+      POSTGRES_USER: amauri # Definir o usuário do banco de dados
+      POSTGRES_PASSWORD: 1234  # Definir a senha do banco de dados
+      POSTGRES_DB: sisten # Nome do banco de dados a ser criado
+    ports:
+      - "5432:5432"  # Mapeia a porta 5432 para que possamos acessar o DB no host
+    networks:
+      - app-network  # Conecta o serviço do PostgreSQL à rede interna
+
+  # Serviço da aplicação Node.js
+  app:
+    build: .  # Usar o Dockerfile na raiz para construir a imagem
+    ports:
+      - "8080:3000"  # Mapeia a porta 3000 do contêiner para a 8080 do host
+    environment:
+      DATABASE_URL: "postgres://amauri:1234@db:5432/sisten"  # Conexão com o DB
+    depends_on:
+      - db  # Garantir que o PostgreSQL seja iniciado antes da aplicação
+    networks:
+      - app-network  # Conecta a aplicação à mesma rede interna
+
+# Definindo a rede para os serviços se comunicarem
+networks:
+  app-network:
+    driver: bridge

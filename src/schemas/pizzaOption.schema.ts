@@ -1,0 +1,34 @@
+import { z } from "zod";
+import { sizeType } from "../entities/pizzaOption.entity";
+import { pizzaReadSchema } from "./pizza.schema";
+
+const pizzaOptionSchema = z.object({
+  id: z.number().positive(),
+ 
+  size: z
+      .nativeEnum(sizeType),
+  price: z.string().max(100),
+
+  extras:z.string().array().nullish(),
+
+  halfAndHalf: z.boolean().default(false),
+
+  halfOptions: z.string().nullish()
+
+});
+
+const pizzaOptionCreateSchema = pizzaOptionSchema.omit({ id: true });
+
+const pizzaOptionReadSchema = pizzaOptionSchema.extend({pizza:pizzaReadSchema})
+
+const allpizzaOptionReadSchema = pizzaOptionReadSchema.array();
+
+const pizzaOptionUpdateSchema = pizzaOptionCreateSchema.partial();
+
+export {
+  allpizzaOptionReadSchema,
+  pizzaOptionSchema,
+  pizzaOptionCreateSchema,
+  pizzaOptionReadSchema,
+  pizzaOptionUpdateSchema,
+};

@@ -16,17 +16,27 @@ class Product{
     @Column({length:100})
     name: string
 
-    @Column({type:"float"})
-    quantity: number
+    @Column({length: 100 })
+    quantity: string
 
-    @Column({type:"float"})
-    price:number
+    @Column({ type: "varchar", length: 100, nullable:true})
+    initialPrice?: string | null | undefined
+
+    @Column({length:100})
+    price:string
+
+    @Column({length:100})
+    category: string
 
     @Column({type: "varchar", length:200, nullable: true})
     supplier?: string | null | undefined
 
     @Column({ type: "enum", enum: MeasurementType, default: MeasurementType.UNIDADE})
     unitOfMeasurement:MeasurementType
+
+    @Column("text",{nullable:true})
+    img?:string | null | undefined
+
 
     @ManyToOne(()=> Company,(c)=>c.products, { onDelete: "CASCADE" })
     company:Company;

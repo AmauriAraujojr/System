@@ -1,6 +1,6 @@
-import { getRounds, hashSync } from "bcryptjs";
-import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import Address from "./address.entity";
+import { Pedido } from "./pedidosOn.entity";
 
 
 @Entity("clients")
@@ -15,24 +15,14 @@ class Client{
     @Column({length:20})
     phoneNumber: string
 
-    @Column({ length: 50, unique: true })
-    email: string;
-
-    @Column({length:200})
-    password: string
-
-
-    @BeforeInsert()
-    @BeforeUpdate()
-    hashPassword(){
-        const hasRounds:any = getRounds(this.password);
-        if(!hasRounds){
-            this.password = hashSync(this.password, 10)
-        }
-    }
+  
     @OneToOne(() => Address, { onDelete: "CASCADE" })
     @JoinColumn()
     address:Address ;
+
+
+    @OneToMany(() => Pedido, pedido => pedido.client)
+    pedidos: Pedido[];
 
     // @ManyToOne(()=> Company,(c)=>c.clients, { onDelete: "CASCADE" })
     // company:Company;

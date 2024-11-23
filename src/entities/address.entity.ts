@@ -17,7 +17,7 @@ import Client from "./client.entity";
     @Column({ type: "varchar", length: 7, nullable: true })
     number?: string | null | undefined;
   
-    @Column({ length: 150 })
+    @Column({ length: 150, default:"Bom Repouso" })
     city: string;
   
     @Column({ length: 100})

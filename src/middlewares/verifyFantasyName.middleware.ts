@@ -8,28 +8,21 @@ import Employees from "../entities/employees.entity";
 import { repositoryClient } from "../interfaces/client.interface";
 import Client from "../entities/client.entity";
 
-export const VerifyEmailExists = async (
+export const VerifyFantasyNameExists = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { email } = req.body;
+  const { fantasyName} = req.body;
 
-  if (!email) return next();
+  if (!fantasyName) return next();
 
   const repository: repositoryCompany = AppDataSource.getRepository(Company);
 
-  const company: Company | null = await repository.findOneBy({ email: email });
+  const company: Company | null = await repository.findOneBy({ fantasyName: fantasyName});
 
-  const repositoryEmployee: repositoryEmployees = AppDataSource.getRepository(Employees);
-
-  const employee:Employees| null = await repositoryEmployee.findOneBy({ email: email });
-
-  const repositoryClient: repositoryClient = AppDataSource.getRepository(Client);
-
-
-  if (company) throw new AppError("Email already exists", 409);
-  if (employee) throw new AppError("Email already exists", 409);
+ 
+  if (company) throw new AppError("fantasyNamea all ready exists", 409);
 
 
 

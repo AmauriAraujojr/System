@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { companyController } from "../controllers";
-import { validateBody } from "../middlewares/validadeBody.middleware";
 import {
   companyCreateSchema,
   companyUpdateSchema,
@@ -8,11 +7,14 @@ import {
 import { VerifyEmailExists } from "../middlewares/verifyEmailExists.middlewere";
 import { VerifyEntitieExists } from "../middlewares/verifyEntitieID.middleware";
 import { verifyToken } from "../middlewares/verifyToken.middleware";
+import { validateBody } from "../middlewares/validadeBody.middleware";
+import { VerifyFantasyNameExists } from "../middlewares/verifyFantasyName.middleware";
 
 const companyRouter: Router = Router();
 
 companyRouter.post(
   "",
+  VerifyFantasyNameExists,
   VerifyEmailExists,
   validateBody(companyCreateSchema),
   companyController.create

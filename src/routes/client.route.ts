@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { clientController} from "../controllers";
 import { VerifyEmailExists } from "../middlewares/verifyEmailExists.middlewere";
-import { validateBody } from "../middlewares/validadeBody.middleware";
 import { clientCreateSchema, clientUpdateSchema } from "../schemas/client.schema";
 import { VerifyClient } from "../middlewares/veryfyClient.middleware";
 import { verifyToken } from "../middlewares/verifyToken.middleware";
 import { verifyOwner } from "../middlewares/verifyOwner.middleware";
+import { validateBody } from "../middlewares/validadeBody.middleware";
 
 export const clientRouter:Router=Router();
 

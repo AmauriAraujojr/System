@@ -9,6 +9,8 @@ import {
 } from "typeorm";
 import Employees from "./employees.entity";
 import Product from "./products.entity";
+import { Pedido } from "./pedidosOn.entity";
+import { Pizza } from "./pizza.entity";
 
 @Entity("companies")
 class Company {
@@ -33,6 +35,14 @@ class Company {
   @Column({ length: 200 })
   password: string;
 
+  @Column("text",{nullable:true})
+  logo?:string | null | undefined
+
+  @Column("text",{nullable:true})
+  img?:string | null | undefined
+
+
+
   @BeforeInsert()
   @BeforeUpdate()
   hashPassword() {
@@ -48,6 +58,13 @@ class Company {
   @OneToMany(() => Product, (p) => p.company)
   products: Array<Product>;
 
+
+  @OneToMany(() => Pedido, pedido => pedido.company)
+  pedidos: Array<Pedido>;
+
+
+  @OneToMany(() => Pizza, pizza => pizza.company)
+  pizzas: Array<Pizza>;
 
 }
 
