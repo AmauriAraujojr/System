@@ -77,6 +77,7 @@ const read = async (): Promise<allPedidos> => {
       client: { address: true },
       products: true,
       pizzaOption: { pizza: true },
+      company:true
     },
     order: { id: "ASC" },
   });
@@ -91,11 +92,13 @@ const update = async (
   const pedidoRepository: repositoryPedidos =
     AppDataSource.getRepository(Pedido);
 
-  Object.assign(pedido, payload);
+  const pedidoUp = pedidoRepository.create({
+    ...pedido,
+    ...payload,
+  });
+  await pedidoRepository.save(pedidoUp);
 
-  await pedidoRepository.save(pedido);
-
-  return pedidosReadSchema.parse(pedido);
+  return pedidosReadSchema.parse(pedidoUp);
 };
 
 export default { create, read, update };

@@ -1,27 +1,26 @@
 import { z } from "zod";
 import { productReadSchema } from "./product.schema";
 import { statusType } from "../entities/pedidosOn.entity";
-import { clientCreateSchema, clientReadSchema, clientSchema } from "./client.schema";
+import { clientCreateSchema } from "./client.schema";
 import { pizzaOptionReadSchema } from "./pizzaOption.schema";
+import { companyReadSchema } from "./company.schema";
 
 
 const pedidosSchema = z.object({
   id: z.number().positive(),
   status: z.nativeEnum(statusType).default(statusType.PENDENTE),
   type: z.nativeEnum(statusType).default(statusType.RETIRADA),
-  products: productReadSchema.array(),
-  pizzaOption: pizzaOptionReadSchema.array(),
   taxa: z.string().max(19).nullish(),
-  index: z.string().max(7).nullish()
-
-
+  index: z.string().max(7).nullish(),
+  products: productReadSchema.array(),
+  pizzaOption: pizzaOptionReadSchema.array()
 });
 
 const pedidosCreateSchema = pedidosSchema.omit({ id: true }).extend({client:clientCreateSchema});
 const pedidosUpdateSchema = pedidosCreateSchema.partial();
 const pedidosReadSchema = pedidosSchema
 .extend({ createdAt:z.date(),
-  updatedAt:z.date(), client:clientCreateSchema})
+  updatedAt:z.date(), client:clientCreateSchema, company:companyReadSchema})
 const allpedidosReadSchema = pedidosReadSchema.array();
 
 export { pedidosSchema, pedidosCreateSchema, pedidosUpdateSchema ,pedidosReadSchema, allpedidosReadSchema};

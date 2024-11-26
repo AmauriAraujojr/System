@@ -28,11 +28,7 @@ const create = async (payload: login): Promise<sessionReturn> => {
 
   const company: Company | null = await companyRepository.findOne({
     where: { email: email },
-    relations:{
-      employees:true,
-      products:true,
-      pedidos:{client:{address:true},products:true,pizzaOption:{pizza:true}}
-    }  });
+    });
 
   const employee: Employees | null = await employeeRepository.findOne({
     where: { email: email },

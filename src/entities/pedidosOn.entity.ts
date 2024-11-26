@@ -28,7 +28,6 @@ export class Pedido {
     @JoinTable()
     pizzaOption: PizzaOption[] ;
     
-    
     @Column({ type: "enum", enum: statusType, default: statusType.ENTREGA})
     type:statusType
 

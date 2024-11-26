@@ -1,16 +1,16 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class InitialMigration1732321384578 implements MigrationInterface {
-    name = 'InitialMigration1732321384578'
+export class InitialMigration1732645572044 implements MigrationInterface {
+    name = 'InitialMigration1732645572044'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TYPE "public"."employees_job_enum" AS ENUM('Motoboy', 'Garçon', 'Pizzaiolo')`);
         await queryRunner.query(`CREATE TABLE "employees" ("id" SERIAL NOT NULL, "name" character varying(100) NOT NULL, "phoneNumber" character varying(20) NOT NULL, "email" character varying(50) NOT NULL, "password" character varying(200) NOT NULL, "job" "public"."employees_job_enum" NOT NULL DEFAULT 'Garçon', "companyId" integer, CONSTRAINT "UQ_765bc1ac8967533a04c74a9f6af" UNIQUE ("email"), CONSTRAINT "PK_b9535a98350d5b26e7eb0c26af4" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "addresses" ("id" SERIAL NOT NULL, "street" character varying(150) NOT NULL, "number" character varying(7), "city" character varying(150) NOT NULL DEFAULT 'Bom Repouso', "neighborhood" character varying(100) NOT NULL, CONSTRAINT "PK_745d8f43d3af10ab8247465e450" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "clients" ("id" SERIAL NOT NULL, "name" character varying(100) NOT NULL, "phoneNumber" character varying(20) NOT NULL, "addressId" integer, CONSTRAINT "REL_67c4d10f39fdc8a0bbfccdcf73" UNIQUE ("addressId"), CONSTRAINT "PK_f1ab7cf3a5714dbc6bb4e1c28a4" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "pizza" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "price" character varying NOT NULL, "description" text, "img" text, "companyId" integer, CONSTRAINT "PK_cb1970bd1d17619fd6bc1ec7414" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "pizza" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "price_G" character varying NOT NULL, "price_M" character varying NOT NULL, "price_P" character varying NOT NULL, "description" text, "img" text, "companyId" integer, CONSTRAINT "PK_cb1970bd1d17619fd6bc1ec7414" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TYPE "public"."pizza_option_size_enum" AS ENUM('Pequena', 'Média', 'Grande')`);
-        await queryRunner.query(`CREATE TABLE "pizza_option" ("id" SERIAL NOT NULL, "size" "public"."pizza_option_size_enum" NOT NULL, "price" character varying NOT NULL, "extras" jsonb, "halfAndHalf" boolean NOT NULL DEFAULT false, "halfOptions" text, "pizzaId" integer, CONSTRAINT "REL_e8fa28a8238509368f00e1dee5" UNIQUE ("pizzaId"), CONSTRAINT "PK_9c9c638c805a27325874d32c048" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "pizza_option" ("id" SERIAL NOT NULL, "size" "public"."pizza_option_size_enum" NOT NULL, "price" character varying NOT NULL, "extras" jsonb, "halfAndHalf" boolean NOT NULL DEFAULT false, "halfOptionsId" integer, "pizzaId" integer, CONSTRAINT "PK_9c9c638c805a27325874d32c048" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TYPE "public"."pedido_type_enum" AS ENUM('Pendente', 'Aceito', 'Saiu para a entrega', 'Pronto para retirada', 'Concluído', 'Retirada', 'Entrega', 'Cancelado')`);
         await queryRunner.query(`CREATE TYPE "public"."pedido_status_enum" AS ENUM('Pendente', 'Aceito', 'Saiu para a entrega', 'Pronto para retirada', 'Concluído', 'Retirada', 'Entrega', 'Cancelado')`);
         await queryRunner.query(`CREATE TABLE "pedido" ("id" SERIAL NOT NULL, "type" "public"."pedido_type_enum" NOT NULL DEFAULT 'Entrega', "status" "public"."pedido_status_enum" NOT NULL DEFAULT 'Pendente', "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "taxa" character varying(19), "index" character varying(7), "clientId" integer, "companyId" integer, CONSTRAINT "PK_af8d8b3d07fae559c37f56b3f43" PRIMARY KEY ("id"))`);
@@ -26,7 +26,8 @@ export class InitialMigration1732321384578 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "employees" ADD CONSTRAINT "FK_c7b030a4514a003d9d8d31a812b" FOREIGN KEY ("companyId") REFERENCES "companies"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "clients" ADD CONSTRAINT "FK_67c4d10f39fdc8a0bbfccdcf73a" FOREIGN KEY ("addressId") REFERENCES "addresses"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "pizza" ADD CONSTRAINT "FK_5a3d7785b3f708cb8f426a443b9" FOREIGN KEY ("companyId") REFERENCES "companies"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE "pizza_option" ADD CONSTRAINT "FK_e8fa28a8238509368f00e1dee50" FOREIGN KEY ("pizzaId") REFERENCES "pizza"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "pizza_option" ADD CONSTRAINT "FK_daa855ac045ba4e4d229e38218d" FOREIGN KEY ("halfOptionsId") REFERENCES "pizza"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE "pizza_option" ADD CONSTRAINT "FK_e8fa28a8238509368f00e1dee50" FOREIGN KEY ("pizzaId") REFERENCES "pizza"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "pedido" ADD CONSTRAINT "FK_c8cc66bb9faf35188437455162f" FOREIGN KEY ("clientId") REFERENCES "clients"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "pedido" ADD CONSTRAINT "FK_0c399d29f177de0cc0358cffe8f" FOREIGN KEY ("companyId") REFERENCES "companies"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "products" ADD CONSTRAINT "FK_47942e65af8e4235d4045515f05" FOREIGN KEY ("companyId") REFERENCES "companies"("id") ON DELETE CASCADE ON UPDATE NO ACTION`);
@@ -45,6 +46,7 @@ export class InitialMigration1732321384578 implements MigrationInterface {
         await queryRunner.query(`ALTER TABLE "pedido" DROP CONSTRAINT "FK_0c399d29f177de0cc0358cffe8f"`);
         await queryRunner.query(`ALTER TABLE "pedido" DROP CONSTRAINT "FK_c8cc66bb9faf35188437455162f"`);
         await queryRunner.query(`ALTER TABLE "pizza_option" DROP CONSTRAINT "FK_e8fa28a8238509368f00e1dee50"`);
+        await queryRunner.query(`ALTER TABLE "pizza_option" DROP CONSTRAINT "FK_daa855ac045ba4e4d229e38218d"`);
         await queryRunner.query(`ALTER TABLE "pizza" DROP CONSTRAINT "FK_5a3d7785b3f708cb8f426a443b9"`);
         await queryRunner.query(`ALTER TABLE "clients" DROP CONSTRAINT "FK_67c4d10f39fdc8a0bbfccdcf73a"`);
         await queryRunner.query(`ALTER TABLE "employees" DROP CONSTRAINT "FK_c7b030a4514a003d9d8d31a812b"`);

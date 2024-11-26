@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { PizzaOption } from "./pizzaOption.entity";
 import Company from "./company.entity";
 
@@ -12,7 +12,13 @@ export class Pizza {
     name: string;
 
     @Column()
-    price: string; 
+    price_G: string; 
+
+    @Column()
+    price_M: string; 
+
+    @Column()
+    price_P: string; 
 
     @Column("text", { nullable: true })
     description?: string;
@@ -20,8 +26,8 @@ export class Pizza {
     @Column("text",{nullable:true})
     img?:string | null | undefined
 
-    @OneToOne(() => PizzaOption, (po) => po.pizza)
-    pizzaOption: PizzaOption;
+    @OneToMany(() => PizzaOption, (po) => po.pizza)
+    pizzaOptions: PizzaOption[];
 
     @ManyToOne(()=> Company,(c)=>c.pizzas, { onDelete: "CASCADE" })
     company:Company;

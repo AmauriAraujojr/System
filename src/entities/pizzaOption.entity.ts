@@ -1,35 +1,39 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToOne,
+  JoinColumn,
+} from "typeorm";
 import { Pizza } from "./pizza.entity";
 
 export enum sizeType {
-    PEQUENA = "Pequena",
-    MEDIA= "Média",
-    GRANDE="Grande"
-   }
+  PEQUENA = "Pequena",
+  MEDIA = "Média",
+  GRANDE = "Grande",
+}
 
 @Entity()
 export class PizzaOption {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    
-    @Column({ type: "enum", enum: sizeType})
-    size:sizeType
+  @Column({ type: "enum", enum: sizeType })
+  size: sizeType;
 
-    @Column()
-    price: string; 
+  @Column()
+  price: string;
 
-    @Column("jsonb", { nullable: true })
-    extras?: string[] | null;
+  @Column("jsonb", { nullable: true })
+  extras?: string[] | null | undefined;
 
-    @Column({ default: false })
-    halfAndHalf: boolean; 
+  @Column({ default: false })
+  halfAndHalf: boolean;
 
-    @Column("text", { nullable: true })
-    halfOptions?: string; 
+  @ManyToOne(() => Pizza, (pizza) => pizza.pizzaOptions)
+  halfOptions?: Pizza | null;
 
-    @OneToOne(() => Pizza, { onDelete: "CASCADE" })
-    @JoinColumn()
-    pizza:Pizza ;
-
+  @ManyToOne(() => Pizza, (pizza) => pizza.pizzaOptions)
+  pizza: Pizza;
 }

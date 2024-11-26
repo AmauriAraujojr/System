@@ -18,9 +18,7 @@ const create = async (payload: createCompany): Promise<readCompany> => {
 
   const company: Company = companyRepository.create({
     ...payload,
-    employees: [],
-    pedidos:[],
-    products:[]
+  
   });
 
   await companyRepository.save(company);
@@ -32,12 +30,7 @@ const read = async (): Promise<allCompany> => {
   const repository: repositoryCompany = AppDataSource.getRepository(Company);
 
   const companies = await repository.find({
-    relations: {
-      employees: true,
-      products:true,
-      pedidos:{client:{address:true},pizzaOption:{pizza:true},products:true},
-
-    },
+  
     order: { id: 1 },
   });
   return allcompanyReadSchema.parse(companies);

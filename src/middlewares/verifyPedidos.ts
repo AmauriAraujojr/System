@@ -1,9 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { AppDataSource } from "../data-source";
 import { AppError } from "../errors/app.error";
-import { repositoryProduct } from "../interfaces/product.interface";
-import Product from "../entities/products.entity";
-import { productReadSchema } from "../schemas/product.schema";
 import { repositoryPedidos } from "../interfaces/pedidos.interface";
 import { Pedido } from "../entities/pedidosOn.entity";
 import { pedidosReadSchema } from "../schemas/pedidos.schema";
@@ -15,7 +12,9 @@ export const VerifyPedidoExists= async (req:Request, res:Response, next:NextFunc
     const repositoryPedidos:repositoryPedidos=AppDataSource.getRepository(Pedido)
 
     const pedido:Pedido | null = await repositoryPedidos.findOne({
-        where:{id}
+        where:{id},
+        relations: { client: { address: true }, products: true, pizzaOption: { pizza: true },company:true },
+
         
     })
 

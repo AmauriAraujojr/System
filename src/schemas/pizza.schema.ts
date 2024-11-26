@@ -3,7 +3,9 @@ import { z } from "zod";
 const pizzaSchema = z.object({
   id: z.number().positive(),
   name: z.string().max(100),
-  price: z.string().max(100),
+  price_G: z.string().max(100),
+  price_M: z.string().max(100),
+  price_P: z.string().max(100),
   description:z.string().nullish(),
   img:z.string().nullish()
 

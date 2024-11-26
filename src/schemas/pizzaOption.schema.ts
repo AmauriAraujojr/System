@@ -4,22 +4,22 @@ import { pizzaReadSchema } from "./pizza.schema";
 
 const pizzaOptionSchema = z.object({
   id: z.number().positive(),
- 
-  size: z
-      .nativeEnum(sizeType),
+
+  size: z.nativeEnum(sizeType),
   price: z.string().max(100),
 
-  extras:z.string().array().nullish(),
+  extras: z.string().array().nullish(),
 
   halfAndHalf: z.boolean().default(false),
 
-  halfOptions: z.string().nullish()
-
+  halfOptions: pizzaReadSchema.nullish(),
 });
 
 const pizzaOptionCreateSchema = pizzaOptionSchema.omit({ id: true });
 
-const pizzaOptionReadSchema = pizzaOptionSchema.extend({pizza:pizzaReadSchema})
+const pizzaOptionReadSchema = pizzaOptionSchema.extend({
+  pizza: pizzaReadSchema,
+});
 
 const allpizzaOptionReadSchema = pizzaOptionReadSchema.array();
 

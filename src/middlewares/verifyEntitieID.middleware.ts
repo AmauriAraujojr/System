@@ -19,12 +19,7 @@ export const VerifyEntitieExists= async (req:Request, res:Response, next:NextFun
 
     const company:Company | null = await repositoryCompany.findOne({
         where:{id},
-        relations: {
-          employees: true,
-          products:true,
-          pedidos:{client:{address:true},pizzaOption:{pizza:true},products:true},
-    
-        },
+       
     })
 
     if(!company)throw new AppError("Company not found", 404)
