@@ -1,5 +1,6 @@
-import { Column, Entity,  ManyToOne,  PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity,  ManyToOne,  OneToMany,  PrimaryGeneratedColumn } from "typeorm";
 import Company from "./company.entity";
+import { ProductSell } from "./product_sell.entity";
 
 
 export enum MeasurementType {
@@ -37,6 +38,8 @@ class Product{
     @Column("text",{nullable:true})
     img?:string | null | undefined
 
+    @OneToMany(() => ProductSell, (po) => po.product)
+    productSell: ProductSell[];
 
     @ManyToOne(()=> Company,(c)=>c.products, { onDelete: "CASCADE" })
     company:Company;

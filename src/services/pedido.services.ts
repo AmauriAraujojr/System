@@ -75,8 +75,8 @@ const read = async (): Promise<allPedidos> => {
   const pedidos = await repository.find({
     relations: {
       client: { address: true },
-      products: true,
-      pizzaOption: { pizza: true },
+      products: {product:true},
+      pizzaOption: { pizza: true, halfOptions:true},
       company:true
     },
     order: { id: "ASC" },

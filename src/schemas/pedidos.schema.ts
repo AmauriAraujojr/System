@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { productReadSchema } from "./product.schema";
 import { statusType } from "../entities/pedidosOn.entity";
 import { clientCreateSchema } from "./client.schema";
 import { pizzaOptionReadSchema } from "./pizzaOption.schema";
 import { companyReadSchema } from "./company.schema";
+import { productSellReadSchema } from "./productSell.schema";
 
 
 const pedidosSchema = z.object({
@@ -12,7 +12,7 @@ const pedidosSchema = z.object({
   type: z.nativeEnum(statusType).default(statusType.RETIRADA),
   taxa: z.string().max(19).nullish(),
   index: z.string().max(7).nullish(),
-  products: productReadSchema.array(),
+  products: productSellReadSchema.array(),
   pizzaOption: pizzaOptionReadSchema.array()
 });
 

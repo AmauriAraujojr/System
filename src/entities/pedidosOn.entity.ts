@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToMany, JoinColumn, JoinTable } from "typeorm";
 import Client from "./client.entity";
-import  Product from "./products.entity"
 import Company from "./company.entity";
 import { PizzaOption } from "./pizzaOption.entity";
+import { ProductSell } from "./product_sell.entity";
 
 export enum statusType {
     PENDENTE = "Pendente",
@@ -20,9 +20,9 @@ export class Pedido {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToMany(()=>Product)
+    @ManyToMany(()=>ProductSell)
     @JoinTable()
-    products: Product[] ;
+    products: ProductSell[] ;
     
     @ManyToMany(()=>PizzaOption)
     @JoinTable()

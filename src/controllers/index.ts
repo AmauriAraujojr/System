@@ -6,5 +6,6 @@ import productController from "./product.controller";
 import pedidosController from "./pedidos.controller";
 import pizzaController from "./pizza.controller";
 import pizzaOptionController from "./pizzaOption.controller";
+import productSellController from "./productSell.controller";
 
-export{companyController , sessionController, employeeController,clientController,productController, pedidosController,pizzaController ,pizzaOptionController}
+export{companyController , sessionController, employeeController,clientController,productController, pedidosController,pizzaController ,pizzaOptionController,productSellController}

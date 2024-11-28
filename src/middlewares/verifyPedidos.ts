@@ -13,7 +13,7 @@ export const VerifyPedidoExists= async (req:Request, res:Response, next:NextFunc
 
     const pedido:Pedido | null = await repositoryPedidos.findOne({
         where:{id},
-        relations: { client: { address: true }, products: true, pizzaOption: { pizza: true },company:true },
+        relations: { client: { address: true }, products: {product:true}, pizzaOption: { pizza: true },company:true },
 
         
     })
