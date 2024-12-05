@@ -6,19 +6,22 @@ const pizzaOptionSchema = z.object({
   id: z.number().positive(),
 
   size: z.nativeEnum(sizeType),
-  price: z.string().max(100),
 
-  extras: z.string().array().nullish(),
+  obs: z.string().nullish(),
 
   halfAndHalf: z.boolean().default(false),
 
   halfOptions: pizzaReadSchema.nullish(),
+
+  borda:z.object({sabor:z.string(),price:z.string()}),
+
 });
 
 const pizzaOptionCreateSchema = pizzaOptionSchema.omit({ id: true });
 
 const pizzaOptionReadSchema = pizzaOptionSchema.extend({
-  pizza: pizzaReadSchema,
+  pizza: pizzaReadSchema,  price: z.string().max(100),
+
 });
 
 const allpizzaOptionReadSchema = pizzaOptionReadSchema.array();

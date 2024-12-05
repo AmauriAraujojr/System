@@ -12,7 +12,7 @@ export const VerifyPizzaExists= async (req:Request, res:Response, next:NextFunct
     const repositoryPizza:repositorypizza=AppDataSource.getRepository(Pizza)
 
     const pizza:Pizza | null = await repositoryPizza.findOne({
-        where:{id}
+        where:{id},relations:{company:true}
         
     })
 

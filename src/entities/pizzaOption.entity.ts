@@ -25,11 +25,14 @@ export class PizzaOption {
   @Column()
   price: string;
 
-  @Column("jsonb", { nullable: true })
-  extras?: string[] | null | undefined;
+  @Column({ type: "text", nullable: true })
+  obs?: string | null | undefined;
 
   @Column({ default: false })
   halfAndHalf: boolean;
+
+  @Column("json")
+  borda: {sabor:string, price:string}
 
   @ManyToOne(() => Pizza, (pizza) => pizza.pizzaOptions)
   halfOptions?: Pizza | null;

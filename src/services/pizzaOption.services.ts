@@ -26,34 +26,49 @@ const create = async (
   let priceTotal = "";
   if (payload.halfOptions) {
     let id = payload.halfOptions.id;
-    const pizza2: Pizza | null = await pizzaRepository.findOneBy({ id: id });
-
+    const pizza2: Pizza | null = await pizzaRepository.findOne({
+      where: { id },
+      relations: { company: true },
+    });
     if (!pizza2) {
       throw new AppError("Pizza para a metade não encontrada"); // Caso a pizza não seja encontrada
     }
     if (payload.size == "Grande") {
       if (Number(pizza.price_G) > Number(pizza2.price_G)) {
-        priceTotal = pizza.price_G;
+        let sum = Number(pizza.price_G) + Number(payload.borda.price);
+        priceTotal = String(sum);
       } else if (Number(pizza.price_G) < Number(pizza2.price_G)) {
-        priceTotal = pizza2.price_G;
+        let sum = Number(pizza2.price_G) + Number(payload.borda.price);
+
+        priceTotal = String(sum);
       } else {
-        priceTotal = pizza.price_G;
+        let sum = Number(pizza.price_G) + Number(payload.borda.price);
+
+        priceTotal = String(sum);
       }
     } else if (payload.size == "Média") {
       if (Number(pizza.price_M) > Number(pizza2.price_M)) {
-        priceTotal = pizza.price_M;
+        let sum = Number(pizza.price_M) + Number(payload.borda.price);
+        priceTotal = String(sum);
       } else if (Number(pizza.price_M) < Number(pizza2.price_M)) {
-        priceTotal = pizza2.price_M;
+        let sum = Number(pizza2.price_M) + Number(payload.borda.price);
+        priceTotal = String(sum);
       } else {
-        priceTotal = pizza.price_M;
+        let sum = Number(pizza.price_M) + Number(payload.borda.price);
+        priceTotal = String(sum);
       }
     } else if (payload.size == "Pequena") {
       if (Number(pizza.price_P) > Number(pizza2.price_P)) {
-        priceTotal = pizza.price_P;
+        let sum = Number(pizza.price_P) + Number(payload.borda.price);
+
+        priceTotal = String(sum);
       } else if (Number(pizza.price_P) < Number(pizza2.price_P)) {
-        priceTotal = pizza2.price_P;
+        let sum = Number(pizza2.price_P) + Number(payload.borda.price);
+        priceTotal = String(sum);
       } else {
-        priceTotal = pizza.price_P;
+        let sum = Number(pizza.price_P) + Number(payload.borda.price);
+
+        priceTotal = String(sum);
       }
     }
     const pizzaOp: PizzaOption = pizzaORepository.create({
@@ -68,11 +83,14 @@ const create = async (
     return pizzaOptionReadSchema.parse(pizzaOp);
   } else {
     if (payload.size == "Grande") {
-      priceTotal = pizza.price_G;
+      let sum = Number(pizza.price_G) + Number(payload.borda.price);
+      priceTotal = String(sum);
     } else if (payload.size == "Média") {
-      priceTotal = pizza.price_M;
+      let sum = Number(pizza.price_M) + Number(payload.borda.price);
+      priceTotal = String(sum);
     } else if (payload.size == "Pequena") {
-      priceTotal = pizza.price_P;
+      let sum = Number(pizza.price_P) + Number(payload.borda.price);
+      priceTotal = String(sum);
     }
     const pizzaO: PizzaOption = pizzaORepository.create({
       ...payload,
@@ -93,7 +111,7 @@ const read = async (): Promise<allPizzaOption> => {
 
   const pizzas = await repository.find({
     order: { id: 1 },
-    relations: { pizza: true, halfOptions: true },
+    relations: { pizza: { company: true }, halfOptions: true },
   });
   return allpizzaOptionReadSchema.parse(pizzas);
 };

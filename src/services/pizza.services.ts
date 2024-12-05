@@ -25,7 +25,7 @@ const create = async (
     const repository: repositorypizza =
       AppDataSource.getRepository(Pizza);
   
-    const pizzas = await repository.find({ order: { id: 1 } });
+    const pizzas = await repository.find({ order: { id: 1 },relations:{company:true} });
     return allpizzaReadSchema.parse(pizzas);
   };
   

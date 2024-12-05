@@ -26,6 +26,9 @@ export class Pizza {
     @Column("text",{nullable:true})
     img?:string | null | undefined
 
+    @Column("jsonb")
+    borda: Array<{sabor:string, price:string}>
+
     @OneToMany(() => PizzaOption, (po) => po.pizza)
     pizzaOptions: PizzaOption[];
 

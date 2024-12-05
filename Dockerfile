@@ -6,8 +6,14 @@ COPY . .
 
 RUN npm install
 
+COPY start.sh /app/start.sh
+
+RUN chmod +x /app/start.sh
+
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+CMD ["./start.sh"]
+
+# CMD ["npm", "run", "dev"]
 
 
