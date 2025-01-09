@@ -1,0 +1,9 @@
+FROM nginx:latest
+
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Copie o arquivo nginx.conf modificado
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Criar a estrutura de diretórios e arquivo necessários
+RUN mkdir /usr/src/app -p && touch /usr/src/app/index.js

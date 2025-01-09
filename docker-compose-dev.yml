@@ -3,18 +3,23 @@ services:
     image: postgres:12-alpine
     container_name: meu_postgres
     environment:
-      POSTGRES_PASSWORD: 1234
-      POSTGRES_USER: amauri
-      POSTGRES_DB: sisten
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
     networks:
       - minha_rede
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # Persistência de dados
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   sistema:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile.dev
     container_name: meu_sistema
@@ -23,12 +28,30 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: postgres://amauri:1234@meu_postgres:5432/sisten
+      DATABASE_URL: ${DATABASE_URL}
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - minha_rede
-    # command: ["/start.sh"]  # Usar o script start.sh para rodar migrações e iniciar a aplicação
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/company || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  my-nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.ngx
+    container_name: meunginx
+    ports:
+      - "8080:80"
+    networks:
+      - minha_rede
+    depends_on:
+      sistema:
+        condition: service_healthy
 
 networks:
   minha_rede:
