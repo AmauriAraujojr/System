@@ -8,57 +8,48 @@ import { sessionSchema } from "../schemas/session.schema";
 import { sign } from "jsonwebtoken";
 import Employees from "../entities/employees.entity";
 import { repositoryEmployees } from "../interfaces/employees.interface";
-import { repositoryClient } from "../interfaces/client.interface";
-import Client from "../entities/client.entity";
 
 const create = async (payload: login): Promise<sessionReturn> => {
+
   const validate = sessionSchema.parse(payload);
   const { email } = validate;
 
-  let token: string = "3";
-
   const companyRepository: repositoryCompany =
     AppDataSource.getRepository(Company);
-
   const employeeRepository: repositoryEmployees =
     AppDataSource.getRepository(Employees);
 
-  const clientRepository: repositoryClient =
-    AppDataSource.getRepository(Client);
-
   const company: Company | null = await companyRepository.findOne({
     where: { email: email },
-    });
-
+  });
   const employee: Employees | null = await employeeRepository.findOne({
     where: { email: email },
   });
 
-
   let user = null;
   let userType = null;
 
-  if (company && !employee ) {
+  if (company && !employee) {
     user = company;
     userType = "admin";
-  } else if (employee && !company ) {
+  } else if (employee && !company) {
     user = employee;
     userType = employee.id.toString();
-  } 
+  }
 
-  if (user) {
+  if (user && userType) {
     const isValidPassword = await compare(payload.password, user.password);
     if (!isValidPassword) throw new AppError("Invalid Credentials", 401);
 
-    token = sign({ userType: user }, process.env.SECRET_KEY!, {
-      subject: userType!,
+    const token = sign({ id: user.id, role: userType }, process.env.SECRET_KEY!, {
+      subject: user.id.toString(),
       expiresIn: process.env.EXPIRES_IN!,
     });
+
+    return { token };
   } else {
     throw new AppError("Invalid Credentials", 401);
   }
-
-  return { token };
 };
 
 export default { create };
