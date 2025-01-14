@@ -111,7 +111,7 @@ const read = async (): Promise<allPizzaOption> => {
 
   const pizzas = await repository.find({
     order: { id: 1 },
-    relations: { pizza: { company: true }, halfOptions: true },
+    relations: { pizza: { company: true }, halfOptions:{company:true}},
   });
   return allpizzaOptionReadSchema.parse(pizzas);
 };

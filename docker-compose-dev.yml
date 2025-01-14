@@ -1,3 +1,4 @@
+
 services:
   postgres:
     image: postgres:12-alpine
@@ -54,6 +55,26 @@ services:
     depends_on:
       sistema:
         condition: service_healthy
+
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile.front
+  #   container_name: meu_frontend
+  #   volumes:
+  #     - ./frontend:/home/node/app
+  #   ports:
+  #     - "3001:3000"
+  #   depends_on:
+  #     sistema:
+  #       condition: service_healthy
+  #   networks:
+  #     - minha_rede
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "curl -f http://localhost:3001 || exit 1"]  # Verifica se o frontend está respondendo
+  #     interval: 15s
+  #     timeout: 5s
+  #     retries: 3
 
 networks:
   minha_rede:

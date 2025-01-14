@@ -15,7 +15,7 @@ const pizzaSchema = z.object({
 
 const pizzaCreateSchema = pizzaSchema.omit({ id: true });
 
-const pizzaReadSchema = pizzaSchema.extend({company:companyReadSchema})
+const pizzaReadSchema = pizzaSchema.extend({company:companyReadSchema.pick({id:true})})
 
 const allpizzaReadSchema = pizzaReadSchema.array();
 

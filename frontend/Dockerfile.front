@@ -1,0 +1,19 @@
+FROM node
+
+WORKDIR /home/node/app
+
+RUN chown -R node:node /home/node/app
+
+COPY package.json package-lock.json ./
+
+RUN npm install --legacy-peer-deps
+
+USER node
+
+COPY . ./
+
+# RUN npm run build
+
+EXPOSE 3001
+
+CMD ["npm", "run", "dev"]

@@ -20,7 +20,7 @@ const pizzaOptionSchema = z.object({
 const pizzaOptionCreateSchema = pizzaOptionSchema.omit({ id: true });
 
 const pizzaOptionReadSchema = pizzaOptionSchema.extend({
-  pizza: pizzaReadSchema,  price: z.string().max(100),
+  pizza: pizzaReadSchema, price: z.string().max(100),
 
 });
 
