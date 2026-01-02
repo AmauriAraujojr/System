@@ -27,7 +27,7 @@ const update = async (req: Request, res: Response): Promise<Response> => {
 
 const destroy = async (req: Request, res: Response): Promise<Response> => {
   await companyServices.destroy(res.locals.company);
-  return res.status(204).json();
+  return res.status(204).json()
 };
 
 export default { create, read, retrieve, update, destroy };
