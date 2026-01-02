@@ -5,7 +5,7 @@ import { AppError } from "../errors/app.error";
 import { repositoryCompany } from "../interfaces/company.interface";
 import { login, sessionReturn } from "../interfaces/session.interface";
 import { sessionSchema } from "../schemas/session.schema";
-import { sign } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import Employees from "../entities/employees.entity";
 import { repositoryEmployees } from "../interfaces/employees.interface";
 
@@ -41,10 +41,10 @@ const create = async (payload: login): Promise<sessionReturn> => {
     const isValidPassword = await compare(payload.password, user.password);
     if (!isValidPassword) throw new AppError("Invalid Credentials", 401);
 
-    const token = sign({ id: user.id, role: userType }, process.env.SECRET_KEY!, {
+    const token = jwt.sign({ id: user.id, role: userType }, process.env.SECRET_KEY!, {
       subject: user.id.toString(),
-      expiresIn: process.env.EXPIRES_IN!,
-    });
+      expiresIn: Number(process.env.EXPIRES_IN) || "1d"
+      });
 
     return { token };
   } else {
