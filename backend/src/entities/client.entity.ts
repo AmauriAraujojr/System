@@ -1,6 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import Address from "./address.entity";
-import { Pedido } from "./pedidosOn.entity";
 
 
 @Entity("clients")
@@ -21,8 +20,6 @@ class Client{
     address:Address ;
 
 
-    @OneToMany(() => Pedido, pedido => pedido.client)
-    pedidos: Pedido[];
 
     // @ManyToOne(()=> Company,(c)=>c.clients, { onDelete: "CASCADE" })
     // company:Company;

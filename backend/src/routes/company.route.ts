@@ -6,7 +6,6 @@ import {
 } from "../schemas/company.schema";
 import { VerifyEmailExists } from "../middlewares/verifyEmailExists.middlewere";
 import { VerifyEntitieExists } from "../middlewares/verifyEntitieID.middleware";
-import { verifyToken } from "../middlewares/verifyToken.middleware";
 import { validateBody } from "../middlewares/validadeBody.middleware";
 import { VerifyFantasyNameExists } from "../middlewares/verifyFantasyName.middleware";
 
@@ -20,7 +19,7 @@ companyRouter.post(
   companyController.create
 );
 
-companyRouter.use("/:id", VerifyEntitieExists,verifyToken);
+companyRouter.use("/:id", VerifyEntitieExists);
 
 companyRouter.get("", companyController.read);
 

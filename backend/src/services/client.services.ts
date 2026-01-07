@@ -40,7 +40,7 @@ const read = async (): Promise<allClient> => {
   const repository: repositoryClient = AppDataSource.getRepository(Client);
 
   const client = await repository.find({
-    relations: { address: true, pedidos:{company:true} },
+    relations: { address: true },
     order: { id: 1 },
   });
   return allClientReadSchema.parse(client);

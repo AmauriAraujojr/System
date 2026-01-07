@@ -9,8 +9,8 @@ import {
 } from "typeorm";
 import Employees from "./employees.entity";
 import Product from "./products.entity";
-import { Pedido } from "./pedidosOn.entity";
-import { Pizza } from "./pizza.entity";
+import Category from "./categorys";
+
 
 @Entity("companies")
 class Company {
@@ -58,13 +58,8 @@ class Company {
   @OneToMany(() => Product, (p) => p.company)
   products: Array<Product>;
 
-
-  @OneToMany(() => Pedido, pedido => pedido.company)
-  pedidos: Array<Pedido>;
-
-
-  @OneToMany(() => Pizza, pizza => pizza.company)
-  pizzas: Array<Pizza>;
+  @OneToMany(() => Category, (p) => p.company)
+  categorys: Array<Product>;
 
 }
 

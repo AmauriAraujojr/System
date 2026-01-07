@@ -43,18 +43,18 @@ services:
       timeout: 5s
       retries: 3
 
-  my-nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile.ngx
-    container_name: meunginx
-    ports:
-      - "8080:80"
-    networks:
-      - minha_rede
-    depends_on:
-      sistema:
-        condition: service_healthy
+  # my-nginx:
+  #   build:
+  #     context: ./nginx
+  #     dockerfile: Dockerfile.ngx
+  #   container_name: meunginx
+  #   ports:
+  #     - "8080:80"
+  #   networks:
+  #     - minha_rede
+  #   depends_on:
+  #     sistema:
+  #       condition: service_healthy
 
 networks:
   minha_rede:
