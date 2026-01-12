@@ -7,6 +7,7 @@ import { employeesRouter } from "./routes/employees.route";
 import { clientRouter } from "./routes/client.route";
 import { productRouter } from "./routes/product.route";
 import { handleError } from "./middlewares/handleError.middleware";
+import { categoryRouter } from "./routes/category.route";
 
 const app:Application = express();
 app.use(cors())
@@ -21,6 +22,8 @@ app.use("/employees",employeesRouter)
 app.use("/client",clientRouter)
 
 app.use("/product",productRouter)
+
+app.use("/category",categoryRouter)
 
 
 

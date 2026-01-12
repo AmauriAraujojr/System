@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { categoryReadSchema } from "./category.schema";
 
 const companySchema = z.object({
   id: z.number().positive(),
@@ -8,17 +9,17 @@ const companySchema = z.object({
   phoneNumber: z.string().max(100),
   email: z.string().max(50).email(),
   password: z.string().max(200),
-  logo:z.string().nullish(),
-  img:z.string().nullish()
+  logo: z.string().nullish(),
+  img: z.string().nullish()
 
-  
+
 });
 
-const companyCreateSchema = companySchema.omit({ id: true });
+const companyCreateSchema = companySchema.omit({ id: true })
 
 const companyReadSchema = companySchema
-  .omit({ password: true })
-  
+  .omit({ password: true }).extend({ categorys: categoryReadSchema.array() })
+
 const allcompanyReadSchema = companyReadSchema.array();
 
 const companyUpdateSchema = companyCreateSchema.partial();

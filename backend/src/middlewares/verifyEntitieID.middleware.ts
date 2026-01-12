@@ -19,6 +19,7 @@ export const VerifyEntitieExists= async (req:Request, res:Response, next:NextFun
 
     const company:Company | null = await repositoryCompany.findOne({
         where:{id},
+        relations:{categorys:true}
        
     })
 

@@ -58,11 +58,10 @@ class Company {
   @OneToMany(() => Product, (p) => p.company)
   products: Array<Product>;
 
-  @OneToMany(() => Category, (p) => p.company)
-  categorys: Array<Product>;
+  @OneToMany(() => Category, (c) => c.company)
+  categorys: Array<Category>;
 
 }
-
 
 
 export default Company;
