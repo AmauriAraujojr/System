@@ -26,6 +26,7 @@ services:
     container_name: meu_sistema
     volumes:
       - ./backend:/home/node/app
+      - /home/node/app/node_modules
     ports:
       - "3000:3000"
     environment:
@@ -38,23 +39,23 @@ services:
     networks:
       - minha_rede
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3000/company || exit 1"]
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:3000/health || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 3
 
-  my-nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile.ngx
-    container_name: meunginx
-    ports:
-      - "8080:80"
-    networks:
-      - minha_rede
-    depends_on:
-      sistema:
-        condition: service_healthy
+  # my-nginx:
+  #   build:
+  #     context: ./nginx
+  #     dockerfile: Dockerfile.ngx
+  #   container_name: meunginx
+  #   ports:
+  #     - "8080:80"
+  #   networks:
+  #     - minha_rede
+  #   depends_on:
+  #     sistema:
+  #       condition: service_healthy
 
 networks:
   minha_rede:
