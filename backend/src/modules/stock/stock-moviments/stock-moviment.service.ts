@@ -27,7 +27,8 @@ const movimentServiceCreate = async (
   if (payload.type === "IN") {
     product.currentStock =
       Number(product.currentStock) + Number(payload.quantity);
-      product.costPrice = payload.unitCost!
+      if(payload.unitCost)
+      product.costPrice = payload.unitCost
   }
 
   if (payload.type === "OUT") {

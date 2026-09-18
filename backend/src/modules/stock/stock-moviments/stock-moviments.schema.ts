@@ -10,7 +10,7 @@ const stock_moviments_schema = z.object({
     reason: z.string().max(255),
     createdAt: z.date(),
 
-});
+})
 
 const create_Stock_moviments_schema = stock_moviments_schema.omit({ id: true, createdAt: true }).extend({product:create_Stock_products_schema});
 

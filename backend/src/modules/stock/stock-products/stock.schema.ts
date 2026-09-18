@@ -10,7 +10,7 @@ const stock_products_schema = z.object({
     active: z.boolean().default(true),
     createdAt: z.date(),
     updatedAt: z.date(),
-      costPrice: z.coerce.number().min(0),
+    costPrice: z.coerce.number().min(0),
 
 
 });

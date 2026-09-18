@@ -7,7 +7,7 @@
     "typeorm": "typeorm",                         
     "migrate:generate": "npm run typeorm migration:generate -- -d ./src/database/data-source.ts",
     "migrate:run": "npm run typeorm migration:run -- -d ./src/database/data-source.ts", 
-    "dev": "ts-node-dev --rs --cls --ignore-watch node_modules src/server.ts",
+    "dev":  "ts-node-dev --respawn --transpile-only --clear --poll --ignore-watch node_modules src/server.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

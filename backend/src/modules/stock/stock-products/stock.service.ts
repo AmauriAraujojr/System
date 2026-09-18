@@ -27,6 +27,7 @@ const stockServiceRead = async (): Promise<allProduct> => {
     order: { id: 1 },
   });
 
+
   return read_all_stock_products_schema.parse(products);
 };
 
